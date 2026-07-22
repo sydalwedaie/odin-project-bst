@@ -3,8 +3,8 @@ import { prettyPrint } from "./helpers.js";
 class Node {
   constructor(data, left, right) {
     this.data = data;
-    this.left = left || null;
-    this.right = right || null;
+    this.left = left;
+    this.right = right;
   }
 }
 
@@ -12,7 +12,11 @@ class Tree {
   #sanitizedArray;
   constructor(array) {
     this.#sanitizedArray = this.#sanitizeArray(array);
-    this.root = this.#buildTree(array, 0, this.#sanitizedArray.length - 1);
+    this.root = this.#buildTree(
+      this.#sanitizedArray,
+      0,
+      this.#sanitizedArray.length - 1,
+    );
   }
 
   #buildTree(array, start, end) {
@@ -20,14 +24,12 @@ class Tree {
     const mid = Math.floor(start + end) / 2;
     const left = this.#buildTree(array, start, mid - 1);
     const right = this.#buildTree(array, mid + 1, end);
-    const rootNode = new Node(array[mid], left, right);
-
-    return rootNode;
+    return new Node(array[mid], left, right);
   }
 
   // Helpers
-
   #sanitizeArray(array) {
+    // Sort items and remove duplicates
     return Array.from(new Set(array)).sort();
   }
 }
