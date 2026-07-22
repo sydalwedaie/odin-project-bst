@@ -9,8 +9,10 @@ class Node {
 }
 
 class Tree {
+  #sanitizedArray;
   constructor(array) {
-    this.root = this.#buildTree(array, 0, array.length - 1);
+    this.#sanitizedArray = this.#sanitizeArray(array);
+    this.root = this.#buildTree(array, 0, this.#sanitizedArray.length - 1);
   }
 
   #buildTree(array, start, end) {
@@ -22,7 +24,13 @@ class Tree {
 
     return rootNode;
   }
+
+  // Helpers
+
+  #sanitizeArray(array) {
+    return Array.from(new Set(array)).sort();
+  }
 }
 
-const myTree = new Tree([1, 2, 3, 4, 5, 6, 7]);
+const myTree = new Tree([7, 1, 2, 3, 4, 5, 6, 1]);
 prettyPrint(myTree.root);
