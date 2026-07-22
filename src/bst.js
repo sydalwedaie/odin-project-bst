@@ -19,20 +19,45 @@ class Tree {
     );
   }
 
+  // Helpers
+  #sanitizeArray(array) {
+    return Array.from(new Set(array)).sort((a, b) => a - b);
+  }
+
   #buildTree(array, start, end) {
     if (start > end) return null;
-    const mid = Math.floor(start + end) / 2;
+    const mid = Math.floor((start + end) / 2);
     const left = this.#buildTree(array, start, mid - 1);
     const right = this.#buildTree(array, mid + 1, end);
     return new Node(array[mid], left, right);
   }
 
-  // Helpers
-  #sanitizeArray(array) {
-    // Sort items and remove duplicates
-    return Array.from(new Set(array)).sort();
+  // Methods
+  includes(value) {
+    function traverse(root) {
+      if (root === null) return null;
+      else if (value === root.data) {
+        return true;
+      } else if (value < root.data) {
+        return traverse(root.left);
+      } else if (value > root.data) {
+        return traverse(root.right);
+      }
+    }
+    return traverse(this.root) || false;
   }
 }
 
-const myTree = new Tree([7, 1, 2, 3, 4, 5, 6, 1]);
+const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const myTree = new Tree(input);
 prettyPrint(myTree.root);
+// console.dir(myTree.root, { depth: null, colors: true });
+
+const emptyTree = new Tree([1]);
+prettyPrint(emptyTree.root);
+
+// Test includes
+const testItems = [...input, -1, 0];
+testItems.forEach((item) => {
+  console.assert(myTree.includes(item), `${item} is not in the tree`);
+});
