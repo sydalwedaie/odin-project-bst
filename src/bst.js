@@ -3,8 +3,8 @@ import { prettyPrint } from "./helpers.js";
 class Node {
   constructor(data, left, right) {
     this.data = data;
-    this.left = left;
-    this.right = right;
+    this.left = left || null;
+    this.right = right || null;
   }
 }
 
@@ -35,29 +35,43 @@ class Tree {
   // Methods
   includes(value) {
     function traverse(root) {
-      if (root === null) return null;
-      else if (value === root.data) {
-        return true;
-      } else if (value < root.data) {
-        return traverse(root.left);
-      } else if (value > root.data) {
-        return traverse(root.right);
+      if (root === null) return false;
+      if (value === root.data) return true;
+      return value < root.data ? traverse(root.left) : traverse(root.right);
+    }
+    return traverse(this.root);
+  }
+
+  insert(value) {
+    if (this.includes(value)) return;
+
+    function traverse(root) {
+      if (root === null) {
+        root = new Node(value);
+      } else {
+        value < root.data ? traverse(root.left) : traverse(root.right);
       }
     }
-    return traverse(this.root) || false;
+
+    traverse(this.root);
   }
 }
 
+console.clear();
 const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const myTree = new Tree(input);
 prettyPrint(myTree.root);
 // console.dir(myTree.root, { depth: null, colors: true });
 
-const emptyTree = new Tree([1]);
-prettyPrint(emptyTree.root);
-
 // Test includes
-const testItems = [...input, -1, 0];
-testItems.forEach((item) => {
+console.log("Test includes: ", "should fail -1 and 0");
+const includesTestItems = [...input, -1, 0];
+includesTestItems.forEach((item) => {
   console.assert(myTree.includes(item), `${item} is not in the tree`);
 });
+
+// Test insert
+console.log("Test insert: ");
+const anotherTree = new Tree([1, 2]);
+anotherTree.insert(77);
+prettyPrint(anotherTree.root);
