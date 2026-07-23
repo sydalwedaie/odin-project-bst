@@ -48,8 +48,9 @@ class Tree {
     function traverse(root) {
       if (root === null) {
         root = new Node(value);
+        return;
       } else {
-        value < root.data ? traverse(root.left) : traverse(root.right);
+        return value < root.data ? traverse(root.left) : traverse(root.right);
       }
     }
 
