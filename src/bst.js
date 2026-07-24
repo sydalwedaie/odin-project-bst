@@ -44,6 +44,10 @@ export class Tree {
 
   insert(value) {
     if (this.includes(value)) return;
+    if (this.root === null) {
+      this.root = new Node(value);
+      return;
+    }
 
     let current = this.root;
     function traverse() {
@@ -70,7 +74,7 @@ export class Tree {
   }
 }
 
-// console.clear();
+console.clear();
 // Test initialization
 // const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const myTree = new Tree();
