@@ -49,37 +49,28 @@ export class Tree {
       return;
     }
 
-    let current = this.root;
-    function traverse() {
-      if (
-        (value < current.data && current.left == null) ||
-        (value > current.data && current.right === null)
-      ) {
+    function traverse(root) {
+      if (value < root.data && root.left === null) {
+        root.left = new Node(value);
         return;
-      } else if (value < current.data) {
-        current = current.left;
-        return traverse();
+      } else if (value > root.data && root.right === null) {
+        root.right = new Node(value);
+        return;
       } else {
-        current = current.right;
-        return traverse();
+        return value < root.data ? traverse(root.left) : traverse(root.right);
       }
     }
 
-    traverse();
-    if (value < current.data) {
-      current.left = new Node(value);
-    } else {
-      current.right = new Node(value);
-    }
+    traverse(this.root);
   }
 }
 
 console.clear();
 // Test initialization
 // const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const myTree = new Tree();
-prettyPrint(myTree.root);
-console.dir(myTree.root, { depth: null, colors: true });
+// const myTree = new Tree();
+// prettyPrint(myTree.root);
+// console.dir(myTree.root, { depth: null, colors: true });
 
 // Test includes
 // console.log("Test includes: ", "should fail -1 and 0");
@@ -90,7 +81,7 @@ console.dir(myTree.root, { depth: null, colors: true });
 
 // Test insert
 // console.log("Test insert: ");
-// const anotherTree = new Tree([1, 2]);
+// const anotherTree = new Tree([]);
 // anotherTree.insert(0);
 // anotherTree.insert(12);
 // anotherTree.insert(22);

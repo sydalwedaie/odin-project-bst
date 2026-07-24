@@ -64,7 +64,8 @@ describe("Test method: insert", () => {
   });
 
   test.each([0, 14, 42, 555])("should insert %i in filled tree", (value) => {
-    const myTree = new Tree();
+    const input = [7, 4, 23, 8, 9, 3, 5, 9, 67, 6345, 324];
+    const myTree = new Tree(input);
     myTree.insert(value);
     expect(myTree.includes(value)).toEqual(true);
   });
