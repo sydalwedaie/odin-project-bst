@@ -45,20 +45,33 @@ class Tree {
   insert(value) {
     if (this.includes(value)) return;
 
-    function traverse(root) {
-      if (root === null) {
-        root = new Node(value);
+    let current = this.root;
+    function traverse() {
+      if (
+        (value < current.data && current.left == null) ||
+        (value > current.data && current.right === null)
+      ) {
         return;
+      } else if (value < current.data) {
+        current = current.left;
+        return traverse();
       } else {
-        return value < root.data ? traverse(root.left) : traverse(root.right);
+        current = current.right;
+        return traverse();
       }
     }
 
-    traverse(this.root);
+    traverse();
+    if (value < current.data) {
+      current.left = new Node(value);
+    } else {
+      current.right = new Node(value);
+    }
   }
 }
 
 console.clear();
+// Test initialization
 const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const myTree = new Tree(input);
 prettyPrint(myTree.root);
@@ -74,5 +87,9 @@ includesTestItems.forEach((item) => {
 // Test insert
 console.log("Test insert: ");
 const anotherTree = new Tree([1, 2]);
-anotherTree.insert(77);
+anotherTree.insert(0);
+anotherTree.insert(12);
+anotherTree.insert(22);
+anotherTree.insert(5);
 prettyPrint(anotherTree.root);
+console.dir(anotherTree.root, { depth: null, colors: true });
