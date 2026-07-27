@@ -52,10 +52,8 @@ export class Tree {
     function traverse(root) {
       if (value < root.data && root.left === null) {
         root.left = new Node(value);
-        return;
       } else if (value > root.data && root.right === null) {
         root.right = new Node(value);
-        return;
       } else {
         return value < root.data ? traverse(root.left) : traverse(root.right);
       }
@@ -63,28 +61,32 @@ export class Tree {
 
     traverse(this.root);
   }
+
+  deleteItem(value) {
+    function traverse(root) {
+      if (root.data === value) {
+        if (root.left === null && root.right === null) {
+          // no children
+          return null;
+        } else if (root.left === null || root.right === null) {
+          // one child
+          return root.left || root.right;
+        } else {
+          // two children
+        }
+      }
+
+      if (value < root.data) {
+        root.left = traverse(root.left);
+      } else {
+        root.right = traverse(root.right);
+      }
+
+      return root;
+    }
+
+    if (this.includes(value) && this.root !== null) {
+      traverse(this.root);
+    }
+  }
 }
-
-console.clear();
-// Test initialization
-// const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-// const myTree = new Tree();
-// prettyPrint(myTree.root);
-// console.dir(myTree.root, { depth: null, colors: true });
-
-// Test includes
-// console.log("Test includes: ", "should fail -1 and 0");
-// const includesTestItems = [...input, -1, 0];
-// includesTestItems.forEach((item) => {
-//   console.assert(myTree.includes(item), `${item} is not in the tree`);
-// });
-
-// Test insert
-// console.log("Test insert: ");
-// const anotherTree = new Tree([]);
-// anotherTree.insert(0);
-// anotherTree.insert(12);
-// anotherTree.insert(22);
-// anotherTree.insert(5);
-// prettyPrint(anotherTree.root);
-// console.dir(anotherTree.root, { depth: null, colors: true });

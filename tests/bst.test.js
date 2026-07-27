@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import { Tree } from "../src/bst.js";
+import { prettyPrint } from "../src/helpers.js";
 
 describe("Test building trees", () => {
   test("should convert an array to tree", () => {
@@ -68,5 +69,39 @@ describe("Test method: insert", () => {
     const myTree = new Tree(input);
     myTree.insert(value);
     expect(myTree.includes(value)).toEqual(true);
+  });
+
+  test.each([7, 5, 6345])(
+    "should not insert %i because it already exists",
+    (value) => {
+      const input = [7, 4, 23, 8, 9, 3, 5, 9, 67, 6345, 324];
+      const myTree = new Tree(input);
+      myTree.insert(value);
+      expect(myTree.includes(value)).toEqual(true);
+    },
+  );
+});
+
+describe("Test method: deleteItem", () => {
+  test("should do nothing if tree is empty", () => {
+    const myTree = new Tree();
+    myTree.deleteItem(1);
+    expect(myTree.includes(1)).toEqual(false);
+  });
+  test.each([0, 2, 100])(
+    "should do nothing for %d (doesn't exist)",
+    (value) => {
+      const input = [7, 4, 23, 8, 9, 3, 5, 9, 67, 6345, 324];
+      const myTree = new Tree(input);
+      myTree.deleteItem(value);
+      expect(myTree.includes(value)).toEqual(false);
+    },
+  );
+
+  test.each([3, 7, 6345])("should delete %d (leaf node)", (value) => {
+    const input = [7, 4, 23, 8, 9, 3, 5, 9, 67, 6345, 324];
+    const myTree = new Tree(input);
+    myTree.deleteItem(value);
+    expect(myTree.includes(value)).toEqual(false);
   });
 });
