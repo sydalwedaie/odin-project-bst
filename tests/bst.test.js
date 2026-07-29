@@ -127,7 +127,8 @@ describe("Test method: deleteItem", () => {
 
 describe("Test method: levelOrderForEach", () => {
   const myTree = new Tree(input1);
-  const mockCb = jest.fn(console.log);
+  // const mockCb = jest.fn(console.log);
+  const mockCb = jest.spyOn(console, "log").mockImplementation(() => {});
   const mockCbArgs = [9, 5, 324, 3, 7, 23, 400, 4, 8, 67, 350, 6345];
 
   test("should throw error if callback function not provided", () => {
