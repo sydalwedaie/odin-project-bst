@@ -99,4 +99,17 @@ export class Tree {
       traverse(this.root);
     }
   }
+
+  levelOrderForEach(cb) {
+    if (!cb) throw new Error("A callback function must be supplied.");
+    if (this.root === null) return;
+    const queue = [this.root];
+
+    while (queue.length) {
+      const currentNode = queue.shift();
+      cb(currentNode.data);
+      if (currentNode.left) queue.push(currentNode.left);
+      if (currentNode.right) queue.push(currentNode.right);
+    }
+  }
 }
