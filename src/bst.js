@@ -63,6 +63,11 @@ export class Tree {
   }
 
   deleteItem(value) {
+    function getSuccessor(root) {
+      if (root.left === null) return root;
+      return getSuccessor(root.left);
+    }
+
     function traverse(root) {
       if (root.data === value) {
         if (root.left === null && root.right === null) {
@@ -73,6 +78,11 @@ export class Tree {
           return root.left || root.right;
         } else {
           // two children
+          let successor = getSuccessor(root.right);
+          root.data = successor.data;
+          successor.data = value;
+          root.right = traverse(root.right);
+          return root;
         }
       }
 

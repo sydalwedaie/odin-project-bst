@@ -88,6 +88,7 @@ describe("Test method: deleteItem", () => {
     myTree.deleteItem(1);
     expect(myTree.includes(1)).toEqual(false);
   });
+
   test.each([0, 2, 100])(
     "should do nothing for %d (doesn't exist)",
     (value) => {
@@ -98,7 +99,7 @@ describe("Test method: deleteItem", () => {
     },
   );
 
-  test.each([3, 7, 6345])("should delete %d (leaf node)", (value) => {
+  test.each([3, 7, 6345])("should delete leaf node %d", (value) => {
     const input = [7, 4, 23, 8, 9, 3, 5, 9, 67, 6345, 324];
     const myTree = new Tree(input);
     myTree.deleteItem(value);

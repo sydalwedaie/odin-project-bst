@@ -26,7 +26,9 @@ console.clear();
 // console.dir(anotherTree.root, { depth: null, colors: true });
 
 // Test deleteItem
-const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
 const myTree = new Tree(input);
-// myTree.deleteItem(324);
+myTree.deleteItem(324);
+myTree.deleteItem(350);
+myTree.deleteItem(5);
 prettyPrint(myTree.root);
