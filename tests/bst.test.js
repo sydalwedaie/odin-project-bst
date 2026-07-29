@@ -10,11 +10,7 @@ const treeInput1 = {
     left: {
       data: 3,
       left: null,
-      right: {
-        data: 4,
-        left: null,
-        right: null,
-      },
+      right: { data: 4, left: null, right: null },
     },
     right: {
       data: 7,
@@ -31,11 +27,7 @@ const treeInput1 = {
     },
     right: {
       data: 400,
-      left: {
-        data: 350,
-        left: null,
-        right: null,
-      },
+      left: { data: 350, left: null, right: null },
       right: { data: 6345, left: null, right: null },
     },
   },
@@ -130,5 +122,29 @@ describe("Test method: deleteItem", () => {
     const myTree = new Tree(input1);
     myTree.deleteItem(value);
     expect(myTree.includes(value)).toEqual(false);
+  });
+});
+
+describe("Test method: levelOrderForEach", () => {
+  const myTree = new Tree(input1);
+  const mockCb = jest.fn(console.log);
+  const mockCbArgs = [9, 5, 324, 3, 7, 23, 400, 4, 8, 67, 350, 6345];
+
+  test("should throw error if callback function not provided", () => {
+    expect(() => myTree.levelOrderForEach()).toThrow();
+  });
+
+  test("should do nothing to an empty tree", () => {
+    const emptyTree = new Tree();
+    emptyTree.levelOrderForEach(mockCb);
+    expect(mockCb.mock.calls).toHaveLength(0);
+  });
+
+  test("should call each node in level order", () => {
+    myTree.levelOrderForEach(mockCb);
+    expect(mockCb.mock.calls).toHaveLength(mockCbArgs.length);
+    mockCbArgs.forEach((arg, index) => {
+      expect(mockCb.mock.calls[index][0]).toBe(arg);
+    });
   });
 });
