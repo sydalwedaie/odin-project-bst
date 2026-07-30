@@ -127,7 +127,6 @@ describe("Test method: deleteItem", () => {
 
 describe("Test method: levelOrderForEach", () => {
   const myTree = new Tree(input1);
-  // const mockCb = jest.fn(console.log);
   const mockCb = jest.spyOn(console, "log").mockImplementation(() => {});
   const mockCbArgs = [9, 5, 324, 3, 7, 23, 400, 4, 8, 67, 350, 6345];
 
@@ -148,4 +147,84 @@ describe("Test method: levelOrderForEach", () => {
       expect(mockCb.mock.calls[index][0]).toBe(arg);
     });
   });
+
+  jest.restoreAllMocks();
+});
+
+describe("Test method: preOrderForEach", () => {
+  const myTree = new Tree(input1);
+  const mockCb = jest.spyOn(console, "log").mockImplementation(() => {});
+  const mockCbArgs = [9, 5, 3, 4, 7, 8, 324, 23, 67, 400, 350, 6345];
+
+  test("should throw error if callback function not provided", () => {
+    expect(() => myTree.preOrderForEach()).toThrow();
+  });
+
+  test("should do nothing to an empty tree", () => {
+    const emptyTree = new Tree();
+    emptyTree.preOrderForEach(mockCb);
+    expect(mockCb.mock.calls).toHaveLength(0);
+  });
+
+  test("should call each node in preorder", () => {
+    myTree.preOrderForEach(mockCb);
+    expect(mockCb.mock.calls).toHaveLength(mockCbArgs.length);
+    mockCbArgs.forEach((arg, index) => {
+      expect(mockCb.mock.calls[index][0]).toBe(arg);
+    });
+  });
+
+  jest.restoreAllMocks();
+});
+
+describe("Test method: inOrderForEach", () => {
+  const myTree = new Tree(input1);
+  const mockCb = jest.spyOn(console, "log").mockImplementation(() => {});
+  const mockCbArgs = [3, 4, 5, 7, 8, 9, 23, 67, 324, 350, 400, 6345];
+
+  test("should throw error if callback function not provided", () => {
+    expect(() => myTree.inOrderForEach()).toThrow();
+  });
+
+  test("should do nothing to an empty tree", () => {
+    const emptyTree = new Tree();
+    emptyTree.inOrderForEach(mockCb);
+    expect(mockCb.mock.calls).toHaveLength(0);
+  });
+
+  test("should call each node in preorder", () => {
+    myTree.inOrderForEach(mockCb);
+    expect(mockCb.mock.calls).toHaveLength(mockCbArgs.length);
+    mockCbArgs.forEach((arg, index) => {
+      expect(mockCb.mock.calls[index][0]).toBe(arg);
+    });
+  });
+
+  jest.restoreAllMocks();
+});
+
+describe("Test method: postOrderForEach", () => {
+  const myTree = new Tree(input1);
+  const mockCb = jest.spyOn(console, "log").mockImplementation(() => {});
+  const mockCbArgs = [4, 3, 8, 7, 5, 67, 23, 350, 6345, 400, 324, 9];
+
+  test("should throw error if callback function not provided", () => {
+    expect(() => myTree.postOrderForEach()).toThrow();
+  });
+
+  test("should do nothing to an empty tree", () => {
+    const emptyTree = new Tree();
+    emptyTree.postOrderForEach(mockCb);
+    expect(mockCb.mock.calls).toHaveLength(0);
+  });
+
+  test("should call each node in preorder", () => {
+    myTree.postOrderForEach(mockCb);
+    expect(mockCb.mock.calls).toHaveLength(mockCbArgs.length);
+    mockCbArgs.forEach((arg, index) => {
+      expect(mockCb.mock.calls[index][0]).toBe(arg);
+    });
+  });
+
+  jest.restoreAllMocks();
 });
