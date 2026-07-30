@@ -112,4 +112,40 @@ export class Tree {
       if (currentNode.right) queue.push(currentNode.right);
     }
   }
+
+  preOrderForEach(cb) {
+    if (!cb) throw new Error("A callback function must be supplied.");
+    function traverse(root) {
+      if (root === null) return;
+      cb(root.data);
+      if (root.left) traverse(root.left);
+      if (root.right) traverse(root.right);
+    }
+
+    traverse(this.root);
+  }
+
+  inOrderForEach(cb) {
+    if (!cb) throw new Error("A callback function must be supplied.");
+    function traverse(root) {
+      if (root === null) return;
+      if (root.left) traverse(root.left);
+      cb(root.data);
+      if (root.right) traverse(root.right);
+    }
+
+    traverse(this.root);
+  }
+
+  postOrderForEach(cb) {
+    if (!cb) throw new Error("A callback function must be supplied.");
+    function traverse(root) {
+      if (root === null) return;
+      if (root.left) traverse(root.left);
+      if (root.right) traverse(root.right);
+      cb(root.data);
+    }
+
+    traverse(this.root);
+  }
 }
