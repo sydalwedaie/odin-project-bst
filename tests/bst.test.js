@@ -152,3 +152,25 @@ describe("Test method: height", () => {
     expect(myTree.height(value)).toBe(height);
   });
 });
+
+describe("Test method: depth", () => {
+  const myTree = sampleTree().generated;
+
+  test("should return undefined for empty tree", () => {
+    const emptyTree = new Tree();
+    expect(emptyTree.depth(400)).toBe(undefined);
+  });
+
+  test("should return undefined for non-existant value", () => {
+    expect(myTree.depth(50)).toBe(undefined);
+  });
+
+  test.each([
+    [3, 350],
+    [2, 23],
+    [1, 5],
+    [0, 9],
+  ])("should return %d for node %d", (depth, value) => {
+    expect(myTree.depth(value)).toBe(depth);
+  });
+});
