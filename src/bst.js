@@ -9,14 +9,8 @@ class Node {
 }
 
 export class Tree {
-  #sanitizedArray;
   constructor(array) {
-    this.#sanitizedArray = this.#sanitizeArray(array);
-    this.root = this.#buildTree(
-      this.#sanitizedArray,
-      0,
-      this.#sanitizedArray.length - 1,
-    );
+    this.root = this.#buildTree(this.#sanitizeArray(array));
   }
 
   // Helpers
@@ -24,12 +18,16 @@ export class Tree {
     return Array.from(new Set(array)).sort((a, b) => a - b);
   }
 
-  #buildTree(array, start, end) {
-    if (start > end) return null;
-    const mid = Math.floor((start + end) / 2);
-    const left = this.#buildTree(array, start, mid - 1);
-    const right = this.#buildTree(array, mid + 1, end);
-    return new Node(array[mid], left, right);
+  #buildTree(array) {
+    function makeTree(array, start, end) {
+      if (start > end) return null;
+      const mid = Math.floor((start + end) / 2);
+      const left = makeTree(array, start, mid - 1);
+      const right = makeTree(array, mid + 1, end);
+      return new Node(array[mid], left, right);
+    }
+
+    return makeTree(array, 0, array.length - 1);
   }
 
   // Methods
