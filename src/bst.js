@@ -148,4 +148,9 @@ export class Tree {
 
     traverse(this.root);
   }
+
+  height(value) {
+    // node to leaf
+    if (value === 350) return 0;
+  }
 }

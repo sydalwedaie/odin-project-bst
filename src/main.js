@@ -28,7 +28,10 @@ console.clear();
 // Test deleteItem
 // const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
 // const myTree = new Tree(input);
-// myTree.deleteItem(9);
+// prettyPrint(myTree.root);
+// myTree.deleteItem(3);
+// prettyPrint(myTree.root);
+// myTree.insert(3);
 // prettyPrint(myTree.root);
 
 // Test levelOrderForEach
@@ -37,10 +40,10 @@ console.clear();
 // myTree.levelOrderForEach(console.log);
 
 // Test preOrderForEach
-const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
-const myTree = new Tree(input);
-prettyPrint(myTree.root);
+// const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
+// const myTree = new Tree(input);
+// prettyPrint(myTree.root);
 // myTree.levelOrderForEach(console.log);
 // myTree.preOrderForEach(console.log);
 // myTree.inOrderForEach(console.log);
-myTree.postOrderForEach(console.log);
+// myTree.postOrderForEach(console.log);
