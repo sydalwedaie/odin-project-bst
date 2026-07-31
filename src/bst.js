@@ -190,4 +190,10 @@ export class Tree {
 
     return traverse(this.root);
   }
+
+  reBalance() {
+    const input = [];
+    this.levelOrderForEach((value) => input.push(value));
+    this.root = this.#buildTree(this.#sanitizeArray(input));
+  }
 }
