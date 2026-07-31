@@ -47,3 +47,10 @@ console.clear();
 // myTree.preOrderForEach(console.log);
 // myTree.inOrderForEach(console.log);
 // myTree.postOrderForEach(console.log);
+
+// Test height
+// const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
+// const myTree = new Tree(input);
+// const myTree = new Tree();
+// prettyPrint(myTree.root);
+// console.log(myTree.height(324));

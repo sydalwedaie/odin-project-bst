@@ -131,7 +131,7 @@ describe.each([
   jest.restoreAllMocks();
 });
 
-describe.skip("Test method: height", () => {
+describe("Test method: height", () => {
   const myTree = sampleTree().generated;
 
   test("should return undefined for empty tree", () => {
@@ -143,19 +143,12 @@ describe.skip("Test method: height", () => {
     expect(myTree.height(50)).toBe(undefined);
   });
 
-  test("should return 0 for node 350", () => {
-    expect(myTree.height(324)).toBe(1);
-  });
-
-  test("should return 1 for node 23", () => {
-    expect(myTree.height(5)).toBe(2);
-  });
-
-  test("should return 2 for node 5", () => {
-    expect(myTree.height(5)).toBe(2);
-  });
-
-  test("should return 3 for node 9", () => {
-    expect(myTree.height(9)).toBe(3);
+  test.each([
+    [0, 350],
+    [1, 23],
+    [2, 5],
+    [3, 9],
+  ])("should return %d for node %d", (height, value) => {
+    expect(myTree.height(value)).toBe(height);
   });
 });
