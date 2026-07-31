@@ -150,7 +150,21 @@ export class Tree {
   }
 
   height(value) {
-    // node to leaf
-    if (value === 350) return 0;
+    // longest distance node to leaf
+
+    function countEdges(root) {
+      if (root === null) return -1;
+      const leftHeight = countEdges(root.left);
+      const rightHeight = countEdges(root.right);
+      return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    function traverse(root) {
+      if (root === null) return undefined;
+      if (root.data === value) return countEdges(root);
+      return value < root.data ? traverse(root.left) : traverse(root.right);
+    }
+
+    return traverse(this.root);
   }
 }
