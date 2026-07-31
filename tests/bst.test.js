@@ -193,3 +193,15 @@ describe("Test method: isBalanced", () => {
     expect(myTree.isBalanced()).toBe(false);
   });
 });
+
+describe("Test method: reBalance", () => {
+  const myTree = sampleTree().generated;
+
+  test("should rebalance an unbalanced tree", () => {
+    myTree.insert(70);
+    myTree.insert(75);
+    expect(myTree.isBalanced()).toBe(false);
+    myTree.reBalance();
+    expect(myTree.isBalanced()).toBe(true);
+  });
+});
