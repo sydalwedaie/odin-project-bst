@@ -174,3 +174,22 @@ describe("Test method: depth", () => {
     expect(myTree.depth(value)).toBe(depth);
   });
 });
+
+describe("Test method: isBalanced", () => {
+  const myTree = sampleTree().generated;
+
+  test("should return true for an empty tree", () => {
+    const emptyTree = new Tree();
+    expect(emptyTree.isBalanced()).toBe(true);
+  });
+
+  test("should return true for a balanced tree", () => {
+    expect(myTree.isBalanced()).toBe(true);
+  });
+
+  test("should return false for an unbalanced tree", () => {
+    myTree.insert(70);
+    myTree.insert(75);
+    expect(myTree.isBalanced()).toBe(false);
+  });
+});

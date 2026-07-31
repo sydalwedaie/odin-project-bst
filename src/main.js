@@ -1,9 +1,10 @@
 import { Tree } from "./bst.js";
 import { prettyPrint } from "./helpers.js";
 
+const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
+
 console.clear();
 // Test initialization
-// const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 // const myTree = new Tree(input);
 // prettyPrint(myTree.root);
 // console.dir(myTree.root, { depth: null, colors: true });
@@ -26,7 +27,6 @@ console.clear();
 // console.dir(anotherTree.root, { depth: null, colors: true });
 
 // Test deleteItem
-// const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
 // const myTree = new Tree(input);
 // prettyPrint(myTree.root);
 // myTree.deleteItem(3);
@@ -35,12 +35,10 @@ console.clear();
 // prettyPrint(myTree.root);
 
 // Test levelOrderForEach
-// const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
 // const myTree = new Tree();
 // myTree.levelOrderForEach(console.log);
 
 // Test preOrderForEach
-// const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
 // const myTree = new Tree(input);
 // prettyPrint(myTree.root);
 // myTree.levelOrderForEach(console.log);
@@ -49,8 +47,16 @@ console.clear();
 // myTree.postOrderForEach(console.log);
 
 // Test height
-// const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
 // const myTree = new Tree(input);
 // const myTree = new Tree();
 // prettyPrint(myTree.root);
 // console.log(myTree.height(324));
+
+// Test isBalanced
+const myTree = new Tree(input);
+prettyPrint(myTree.root);
+console.log(myTree.isBalanced());
+myTree.insert(70);
+myTree.insert(75);
+prettyPrint(myTree.root);
+console.log(myTree.isBalanced());
