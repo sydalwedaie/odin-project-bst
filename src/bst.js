@@ -167,4 +167,17 @@ export class Tree {
 
     return traverse(this.root);
   }
+
+  depth(value) {
+    function traverse(root) {
+      if (root === null) return undefined;
+      if (root.data === value) return 0;
+      return (
+        1 + (value < root.data ? traverse(root.left) : traverse(root.right)) ||
+        undefined
+      );
+    }
+
+    return traverse(this.root);
+  }
 }
