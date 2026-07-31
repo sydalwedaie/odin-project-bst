@@ -149,21 +149,21 @@ export class Tree {
     traverse(this.root);
   }
 
+  #countEdges(root) {
+    if (root === null) return -1;
+    const leftHeight = this.#countEdges(root.left);
+    const rightHeight = this.#countEdges(root.right);
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
   height(value) {
     // longest distance node to leaf
 
-    function countEdges(root) {
-      if (root === null) return -1;
-      const leftHeight = countEdges(root.left);
-      const rightHeight = countEdges(root.right);
-      return Math.max(leftHeight, rightHeight) + 1;
-    }
-
-    function traverse(root) {
+    const traverse = (root) => {
       if (root === null) return undefined;
-      if (root.data === value) return countEdges(root);
+      if (root.data === value) return this.#countEdges(root);
       return value < root.data ? traverse(root.left) : traverse(root.right);
-    }
+    };
 
     return traverse(this.root);
   }
@@ -177,6 +177,18 @@ export class Tree {
         undefined
       );
     }
+
+    return traverse(this.root);
+  }
+
+  isBalanced() {
+    const traverse = (root) => {
+      if (root === null) return true;
+      const currentIsBalanced =
+        Math.abs(this.#countEdges(root.left) - this.#countEdges(root.right)) <=
+        1;
+      return currentIsBalanced && traverse(root.left) && traverse(root.right);
+    };
 
     return traverse(this.root);
   }
