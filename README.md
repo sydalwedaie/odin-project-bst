@@ -134,7 +134,7 @@ insert(value) {
 }
 ```
 
-Note the essential difference: **I removed the assignment operation from the base case to the recursion calls, and made the base case return a fresh new node.**
+Note the essential difference: **I made the assignment operation to happen before entering the target node.**
 
 This was the primary way most of the other methods were solved.
 
