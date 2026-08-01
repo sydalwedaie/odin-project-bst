@@ -48,19 +48,17 @@ console.clear();
 
 // Test height
 // const myTree = new Tree(input);
-// const myTree = new Tree();
 // prettyPrint(myTree.root);
 // console.log(myTree.height(324));
 
 // Test isBalanced/reBalance
-// const myTree = new Tree(input);
-// prettyPrint(myTree.root);
-// console.log(myTree.isBalanced());
-// myTree.insert(70);
-// myTree.insert(75);
-// prettyPrint(myTree.root);
-// console.log(myTree.isBalanced());
+const myTree = new Tree(input);
+console.log(myTree.isBalanced());
+myTree.insert(70);
+myTree.insert(75);
+prettyPrint(myTree.root);
+console.log(myTree.isBalanced());
 
-// myTree.reBalance();
-// prettyPrint(myTree.root);
-// console.log(myTree.isBalanced());
+myTree.reBalance();
+prettyPrint(myTree.root);
+console.log(myTree.isBalanced());

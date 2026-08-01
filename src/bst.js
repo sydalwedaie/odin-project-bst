@@ -1,5 +1,3 @@
-import { prettyPrint } from "./helpers.js";
-
 class Node {
   constructor(data, left, right) {
     this.data = data;
@@ -9,46 +7,47 @@ class Node {
 }
 
 export class Tree {
+  #root;
   constructor(array) {
-    this.root = this.#buildTree(this.#sanitizeArray(array));
+    this.#root = this.#buildTree(this.#sanitizeArray(array));
   }
 
-  // Helpers
+  get root() {
+    return this.#root;
+  }
+
+  // Private methods
   #sanitizeArray(array) {
     return Array.from(new Set(array)).sort((a, b) => a - b);
   }
 
-  #buildTree(array) {
-    function makeTree(array, start, end) {
-      if (start > end) return null;
-      const mid = Math.floor((start + end) / 2);
-      const left = makeTree(array, start, mid - 1);
-      const right = makeTree(array, mid + 1, end);
-      return new Node(array[mid], left, right);
-    }
-
-    return makeTree(array, 0, array.length - 1);
+  #buildTree(array, start = 0, end = array.length - 1) {
+    if (start > end) return null;
+    const mid = Math.floor((start + end) / 2);
+    const left = this.#buildTree(array, start, mid - 1);
+    const right = this.#buildTree(array, mid + 1, end);
+    return new Node(array[mid], left, right);
   }
 
-  // Methods
+  // Public Methods
   includes(value) {
     function traverse(root) {
       if (root === null) return false;
       if (value === root.data) return true;
       return value < root.data ? traverse(root.left) : traverse(root.right);
     }
-    return traverse(this.root);
+    return traverse(this.#root);
   }
 
   insert(value) {
-    if (this.includes(value)) return;
-    if (this.root === null) {
-      this.root = new Node(value);
+    if (this.#root === null) {
+      this.#root = new Node(value);
       return;
     }
 
     function traverse(root) {
-      if (value < root.data && root.left === null) {
+      if (value === root.data) return;
+      else if (value < root.data && root.left === null) {
         root.left = new Node(value);
       } else if (value > root.data && root.right === null) {
         root.right = new Node(value);
@@ -57,7 +56,7 @@ export class Tree {
       }
     }
 
-    traverse(this.root);
+    traverse(this.#root);
   }
 
   deleteItem(value) {
@@ -93,15 +92,19 @@ export class Tree {
       return root;
     }
 
-    if (this.includes(value) && this.root !== null) {
-      traverse(this.root);
+    if (this.includes(value) && this.#root !== null) {
+      traverse(this.#root);
     }
   }
 
+  #noCbError() {
+    throw new Error("A callback function must be supplied.");
+  }
+
   levelOrderForEach(cb) {
-    if (!cb) throw new Error("A callback function must be supplied.");
-    if (this.root === null) return;
-    const queue = [this.root];
+    if (!cb) this.#noCbError();
+    if (this.#root === null) return;
+    const queue = [this.#root];
 
     while (queue.length) {
       const currentNode = queue.shift();
@@ -112,7 +115,7 @@ export class Tree {
   }
 
   preOrderForEach(cb) {
-    if (!cb) throw new Error("A callback function must be supplied.");
+    if (!cb) this.#noCbError();
     function traverse(root) {
       if (root === null) return;
       cb(root.data);
@@ -120,11 +123,11 @@ export class Tree {
       if (root.right) traverse(root.right);
     }
 
-    traverse(this.root);
+    traverse(this.#root);
   }
 
   inOrderForEach(cb) {
-    if (!cb) throw new Error("A callback function must be supplied.");
+    if (!cb) this.#noCbError();
     function traverse(root) {
       if (root === null) return;
       if (root.left) traverse(root.left);
@@ -132,11 +135,11 @@ export class Tree {
       if (root.right) traverse(root.right);
     }
 
-    traverse(this.root);
+    traverse(this.#root);
   }
 
   postOrderForEach(cb) {
-    if (!cb) throw new Error("A callback function must be supplied.");
+    if (!cb) this.#noCbError();
     function traverse(root) {
       if (root === null) return;
       if (root.left) traverse(root.left);
@@ -144,7 +147,7 @@ export class Tree {
       cb(root.data);
     }
 
-    traverse(this.root);
+    traverse(this.#root);
   }
 
   #countEdges(root) {
@@ -155,15 +158,13 @@ export class Tree {
   }
 
   height(value) {
-    // longest distance node to leaf
-
     const traverse = (root) => {
       if (root === null) return undefined;
       if (root.data === value) return this.#countEdges(root);
       return value < root.data ? traverse(root.left) : traverse(root.right);
     };
 
-    return traverse(this.root);
+    return traverse(this.#root);
   }
 
   depth(value) {
@@ -176,7 +177,7 @@ export class Tree {
       );
     }
 
-    return traverse(this.root);
+    return traverse(this.#root);
   }
 
   isBalanced() {
@@ -188,12 +189,12 @@ export class Tree {
       return currentIsBalanced && traverse(root.left) && traverse(root.right);
     };
 
-    return traverse(this.root);
+    return traverse(this.#root);
   }
 
   reBalance() {
     const input = [];
-    this.levelOrderForEach((value) => input.push(value));
-    this.root = this.#buildTree(this.#sanitizeArray(input));
+    this.inOrderForEach((value) => input.push(value));
+    this.#root = this.#buildTree(input);
   }
 }
