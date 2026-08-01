@@ -199,8 +199,8 @@ const mockCb = jest.fn(console.log);
 Instead of passing `console.log`, we would pass the mock function `mockCb`. `levelOrderForEach` would still call `console.log`, but from `mockCb` we will get access to a `.mock` property that holds data on the state of the callbacks. One of these properties is a `calls` array. It’s an array of arrays; each sub-array represents the argument(s) that the `mockCb` function has been called with in each call. Those arguments correspond to the tree elements passed to the callback function (`console.log`).
 
 ```js
-// The first argument of the first call to the function was 0
-expect(mockCallback.mock.calls[0][0]).toBe(0);
+// The first argument of the second call to the function was 1
+expect(mockCallback.mock.calls[1][0]).toBe(1);
 ```
 
 So if we could inspect this array and make sure that its elements are arranged in the correct order, we would have tested the correct operation of `levelOrderForEach`. In the `describe` block above, the variable `mockCbArgs` holds the correct sequence. By iterating over this array and comparing each element with its counterpart in the array we got from the mock function, we would achieve our goal.
