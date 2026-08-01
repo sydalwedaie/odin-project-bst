@@ -2,6 +2,7 @@ import { Tree } from "./bst.js";
 import { prettyPrint } from "./helpers.js";
 
 const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 400, 350];
+// const input = [7, 4, 23, 8, 9, 4, 3, 5, 7, 9];
 
 console.clear();
 // Test initialization
@@ -52,13 +53,13 @@ console.clear();
 // console.log(myTree.height(324));
 
 // Test isBalanced/reBalance
-const myTree = new Tree(input);
-console.log(myTree.isBalanced());
-myTree.insert(70);
-myTree.insert(75);
-prettyPrint(myTree.root);
-console.log(myTree.isBalanced());
+// const myTree = new Tree(input);
+// console.log(myTree.isBalanced());
+// myTree.insert(70);
+// myTree.insert(75);
+// prettyPrint(myTree.root);
+// console.log(myTree.isBalanced());
 
-myTree.reBalance();
-prettyPrint(myTree.root);
-console.log(myTree.isBalanced());
+// myTree.reBalance();
+// prettyPrint(myTree.root);
+// console.log(myTree.isBalanced());

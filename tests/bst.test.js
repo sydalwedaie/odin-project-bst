@@ -108,7 +108,7 @@ describe.each([
   ["postOrderForEach", [4, 3, 8, 7, 5, 67, 23, 350, 6345, 400, 324, 9]],
 ])("Test methods: forEach", (forEach, args) => {
   const myTree = sampleTree().generated;
-  const mockCb = jest.spyOn(console, "log").mockImplementation(() => {});
+  const mockCb = jest.fn();
 
   test(`should throw error if callback function not provided to ${forEach}`, () => {
     expect(() => myTree[forEach]()).toThrow();
@@ -127,8 +127,6 @@ describe.each([
       expect(mockCb.mock.calls[index][0]).toBe(arg);
     });
   });
-
-  jest.restoreAllMocks();
 });
 
 describe("Test method: height", () => {
