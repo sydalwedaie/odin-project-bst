@@ -56,42 +56,9 @@ I ran into a problem where `this` was not being recognized inside `traverse` fun
 
 My `traverse` functions, defined as function declarations, could not access other methods inside my class, like the `isBalanced` method, which needed to access the private method `#coundEdges` with `this.#countEdges`. It kept telling me that `this` was not defined. Even the autocomplete won’t pick it up. This was simply fixed by converting `traverse` to be an arrow function.
 
-### References vs. Values
+### Mutation vs. reassignment
 
-The prominent pain point in this project, as well as the previous projects on data structures, was getting a hold of the **reference** to a target node. I kept running into problems, only to discover I was holding the target node itself, and not the reference. I’ll show you why this is important through an example:
-
-This is the object representing a tree:
-
-```js
-{
-  data: 7,
-  left: {
-    data: 4,
-    left: { data: 3, left: null, right: null },
-    right: { data: 5, left: null, right: null }
-  },
-  right: {
-    data: 9,
-    left: { data: 8, left: null, right: null },
-    right: { data: 23, left: null, right: null }
-  }
-}
-
-```
-
-If I need to work on the node that holds the value `4`, I need to grab the reference that points to this node, which would be `root.left` in this example. However, if I do `const ref = root.left`, I would be storing the whole node, and not the reference. `ref` would literally be this:
-
-```js
-{
-  data: 4,
-  left: { data: 3, left: null, right: null },
-  right: { data: 5, left: null, right: null }
-}
-```
-
-If I want to set the `left` node to `null`, I cannot do `ref.left`, since that means I’d be calling `left` on the **value**, which is the object shown above, which does not make sense. So I need to do `const ref = root`. Now if I do `ref.left.left`, I’d be referencing the left node.
-
-But, most of the time, that’s not straightforward to do. For example, when I need to grab the reference _when_ I find a target node, I’d be already inside that node by the time I find it. So somehow I need to stop one node earlier, and things start to get messy from there. For each of the methods, I achieved this in some way or another, and as of yet, I can’t fully explain it, but I can walk you through an example. My initial attempt at the `insert` method was like this:
+The prominent pain point in this project, as well as the previous projects on data structures, was to get a hold of the target node and to successfully mutate it. I kept running into problems, only to discover I was not actually mutating the target node, but reassigning a local copy of it. For example, my initial attempt at the `insert` method was like this:
 
 ```js
 // failed attempt
@@ -111,17 +78,46 @@ insert(value) {
 }
 ```
 
-This was my intended logic: If the `traverse` function arrives at a `null` value, it means I’ve reached a leaf. Replace it with a `Node` set to `value`. Otherwise, call `traverse` recursively with the left or right side.
+This was my intended logic: If the `traverse` function arrives at a `null` value, it means it has reached a leaf. Replace it with a `Node` set to `value`. Otherwise, call `traverse` recursively with the left or right side.
 
-As stated earlier, the problem with this code was that by the time `root` became `null`, `root` was literally holding the value `null`, and not the parent node that held the value `null`. So the line `root = new Node(value)` was literally `null = new Node(value)`, which is not even valid code, but for some reason it didn’t raise an error. It just ignored it, and the method did nothing at the end.
+It obviously did not work as I expected; `root` was behaving like a local copy. Spoiler alert: it actually was, but I kept confusing myself. I knew that objects were passed by reference, so I was incredibly baffled why `root` was behaving like it was local.
 
-The way I solved it was to recursively make the assignment calls directly on the left or right nodes, and to **return** a new node with the inserted value at the base case. This way, I would keep a reference to the parent node all the way to, but not going into, the target node.
+The problem was **a confusion of reassignment operation with mutation**. When mutating an object in memory, any variable that points to that object will show the mutation. But a reassignment operation cuts a variable’s connection with that object in memory. In the failed attempt above, I was mistakenly thinking that in the base case, I was mutating the tree. I was sure `this.root` pointed to my tree in memory (this was correct). I passed it to `traverse`, and the recursive calls would properly pass the correct reference down the chain. When it reached `null`, `root` would still be pointing somewhere inside the original tree. However, by doing `root = new Node(value)`, I effectively cut that connection. Now I had a `root` variable that held a new value, and I returned nothing from the base branch. The local variable vanishes when the recursive calls unfold, and `traverse` ends doing nothing at all.
+
+What I was doing was basically this:
 
 ```js
-// working attemp
+function foo(name) {
+  name = 'Sayed'
+}
+
+let name = 'Ali'
+foo(name)
+console.log(name) // still 'Ali', but I expected 'Sayed'.
+```
+
+What I needed done was more like this:
+
+```js
+function foo(person) {
+  person.name = 'Sayed'
+}
+
+let person = {
+  name: 'Ali',
+}
+
+foo(person)
+console.log(person.name) // 'Sayed', because person was mutated.
+```
+
+At this time, I formed the incorrect assumption that `root` was not holding the correct reference to the target node, but I correctly discovered that if I could somehow stop one node before the target node, I would be able to do `root.left = ` or `root.right = ` (like how `person.name` was working as expected in the example above). That is why in the working attempt below, I did a *look ahead* to see if I had reached a `null` (`root.left === null` instead of `root === null`).
+
+```js
+// working attempt
 insert(value) {
   function traverse(root) {
-    else if (value < root.data && root.left === null) {
+    if (value < root.data && root.left === null) {
       root.left = new Node(value);
     } else if (value > root.data && root.right === null) {
       root.right = new Node(value);
@@ -131,14 +127,14 @@ insert(value) {
 		: traverse(root.right);
     }
   }
+
+  traverse(this.root);
 }
 ```
 
-Note the essential difference: **I made the assignment operation to happen before entering the target node.**
+As you can see, it’s much more complex, but it worked. I still didn’t know why until I realized I had been confusing mutation with reassignment.
 
-This was the primary way most of the other methods were solved.
-
-Also, contrast this to how I solved `include`, which does not need to mutate anything. It just checks if a target node is reached, and immediately returns `true` or `false` accordingly. No assignment operation needed, and the above problem didn’t even occur:
+Contrast this to how I solved `includes`. It just checks if a target node is reached, and immediately returns `true` or `false` accordingly. It does not need to mutate anything, and no assignment operation is needed, so the above problem didn’t even occur:
 
 ```js
 includes(value) {
@@ -147,7 +143,8 @@ includes(value) {
     if (value === root.data) return true;
     return value < root.data ? traverse(root.left) : traverse(root.right);
   }
-  return traverse(this.#root);
+
+  return traverse(this.root);
 }
 ```
 
